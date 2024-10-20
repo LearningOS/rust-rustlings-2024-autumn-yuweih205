@@ -47,16 +47,44 @@ where
     fn new() -> Self {
         BinarySearchTree { root: None }
     }
-
-    // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        Ordering::Less => {
+            if let Some(ref mut left_child) = self.left {
+                left_child.insert(value);
+            } else {
+                self.left = Some(Box::new(TreeNode::new(value)));
+            }
+        }
+        Ordering::Greater => {
+            if let Some(ref mut right_child) = self.right {
+                right_child.insert(value);
+            } else {
+                self.right = Some(Box::new(TreeNode::new(value)));
+            }
+        }
+        Ordering::Equal => {
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        match value.cmp(&self.value) {
+        Ordering::Less => {
+            if let Some(ref left_child) = self.left {
+                left_child.search(value)
+            } else {
+                false
+            }
+        }
+        Ordering::Greater => {
+            if let Some(ref right_child) = self.right {
+                right_child.search(value)
+            } else {
+                false
+            }
+        }
+        Ordering::Equal => true,
+    }
     }
 }
 

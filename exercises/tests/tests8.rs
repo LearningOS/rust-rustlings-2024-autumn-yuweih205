@@ -7,9 +7,13 @@
 // Execute `rustlings hint tests8` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
-fn main() {}
+fn main() {
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs();
+    println!("cargo:rustc-env=TEST_FOO={}", timestamp);
+}
 
 #[cfg(test)]
 mod tests {
@@ -19,7 +23,6 @@ mod tests {
     fn test_success() {
         #[cfg(feature = "pass")]
         return;
-
         panic!("no cfg set");
     }
 }
