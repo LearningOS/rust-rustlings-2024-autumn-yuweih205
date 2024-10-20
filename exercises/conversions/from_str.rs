@@ -52,6 +52,25 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.is_empty() {
+            return Err(Self::Err::Empty);
+        }
+
+        let args = s.split(',').collect::<Vec<&str>>();
+
+        if args[0].is_empty() {
+            return Err(Self::Err::NoName);
+        } else if args.len() != 2 {
+            return Err(Self::Err::BadLen);
+        } else if let Err(e) = args[1].parse::<usize>() {
+            return Err(Self::Err::ParseInt(e));
+        }
+
+        Ok(Self {
+            name: args[0].to_string(),
+            // We already identified that this argument can be parsed as an integer.
+            age: args[1].parse().unwrap(),
+        })
     }
 }
 
