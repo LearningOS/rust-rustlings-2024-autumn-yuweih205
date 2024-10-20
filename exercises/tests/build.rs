@@ -14,6 +14,7 @@ fn main() {
         "Your command here with {}, please checkout exercises/tests/build.rs",
         timestamp
     );
+    let your_command = format!("rustc-cfg={}=\"{}\"", "feature", "pass");
     println!("cargo:{}", your_command);
 
     // In tests8, we should enable "pass" feature to make the
