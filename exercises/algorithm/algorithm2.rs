@@ -82,15 +82,10 @@ impl<T> LinkedList<T> {
                 let temp = node.next;
                 node.next = node.prev;
                 node.prev = temp;
-
-                // 更新 current 为之前的 prev，现在是 next
                 current = temp;
             }
         }
-
-        // 更新 start 为原来的 end
         self.start = self.end;
-        // 更新 end 为原来的 start
         if let Some(mut end_ptr) = self.end {
             while let Some(next_ptr) = unsafe { (*end_ptr.as_ptr()).next } {
                 end_ptr = next_ptr;

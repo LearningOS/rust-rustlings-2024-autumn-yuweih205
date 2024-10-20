@@ -7,13 +7,7 @@
 // Execute `rustlings hint tests8` or use the `hint` watch subcommand for a
 // hint.
 
-fn main() {
-    let timestamp = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap()
-        .as_secs();
-    println!("cargo:rustc-env=TEST_FOO={}", timestamp);
-}
+fn main() {}
 
 #[cfg(test)]
 mod tests {
