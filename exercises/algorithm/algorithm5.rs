@@ -28,8 +28,25 @@ impl Graph {
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
         
 		//TODO
-
         let mut visit_order = vec![];
+
+        let mut visited = HashSet::new();
+        visited.insert(start);
+
+        let mut q = VecDeque::new();
+        q.push_back(start);
+
+        while !q.is_empty() {
+            let vet = q.pop_front().unwrap();
+            visit_order.push(vet);
+
+            for v in &self.adj[vet] {
+                if visited.insert(*v) {
+                    q.push_back(*v);
+                }
+            }
+        }
+
         visit_order
     }
 }

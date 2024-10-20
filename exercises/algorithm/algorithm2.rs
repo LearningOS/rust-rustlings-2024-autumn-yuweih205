@@ -72,30 +72,20 @@ impl<T> LinkedList<T> {
         }
     }
 	pub fn reverse(&mut self){
-        let mut current = self.start;
-        self.end = self.start; // 反转后，原来的 start 成为新的 end
-
+        let mut current = self.end;
+        self.start = self.end;
         while let Some(mut current_ptr) = current {
             unsafe {
                 let node = current_ptr.as_mut();
-                // 交换 next 和 prev 指针
                 let temp = node.next;
                 node.next = node.prev;
                 node.prev = temp;
-                current = temp;
+                current = node.next;
             }
         }
-        self.start = self.end;
-        if let Some(mut end_ptr) = self.end {
-            while let Some(next_ptr) = unsafe { (*end_ptr.as_ptr()).next } {
-                end_ptr = next_ptr;
-            }
-            self.end = Some(end_ptr);
-            }
 
-
-        // 反转后设置 start
-        self.start = self.end;
+        // 反转后设置 end
+        self.end = self.start;
 	}
 }
 

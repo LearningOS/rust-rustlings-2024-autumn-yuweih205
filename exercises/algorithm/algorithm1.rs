@@ -28,13 +28,13 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T:PartialOrd+Ord> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T>
+impl<T:PartialOrd+Ord> LinkedList<T>
 where
     T:Clone,
 {

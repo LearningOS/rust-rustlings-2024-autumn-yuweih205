@@ -5,7 +5,15 @@
 */
 
 fn sort<T>(array: &mut [T]){
-    array.sort();
+    for i in 1..array.len() {
+    let temp = array[i];
+    let mut j = i;
+    while j > 0 && array[j - 1] > temp {
+        array[j] = array[j - 1];
+        j -= 1;
+    }
+    array[j] = temp;
+}
 }
 #[cfg(test)]
 mod tests {
