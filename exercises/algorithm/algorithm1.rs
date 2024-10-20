@@ -75,33 +75,27 @@ where
 	{
         let mut result_list = LinkedList::new();
 
-        let mut node_a = list_a.start;
-        let mut node_b = list_b.start;
-        while let (Some(a_ptr), Some(b_ptr)) = (node_a, node_b) {
-            unsafe {
-                let a_val = (*a_ptr.as_ptr()).val.clone();
-                let b_val = (*b_ptr.as_ptr()).val.clone();
+        let mut nodea = list_a.start;
+        let mut nodeb = list_b.start;
 
-                if a_val < b_val {
-                    result_list.add(a_val);
-                    node_a = (*a_ptr.as_ptr()).next;
-                } else {
-                    result_list.add(b_val);
-                    node_b = (*b_ptr.as_ptr()).next;
-                }
+        while nodea.is_some() && nodeb.is_some() {
+            if nodea.unwrap().read().val <= nodeb.unwrap().read().val {
+                result_list.add(nodea.unwrap().read().val);
+                nodea = nodea.unwrap().read().next;
+            } else {
+                result_list.add(nodeb.unwrap().read().val);
+                nodeb = nodeb.unwrap().read().next;
             }
         }
-        while let Some(a_ptr) = node_a {
-            unsafe {
-                result_list.add((*a_ptr.as_ptr()).val.clone());
-                node_a = (*a_ptr.as_ptr()).next;
-            }
+
+        while let Some(val) = na {
+            result_list.add(val.read().val);
+            nodea = nodea.unwrap().read().next;
         }
-        while let Some(b_ptr) = node_b {
-            unsafe {
-                result_list.add((*b_ptr.as_ptr()).val.clone()); // 使用 clone 代替直接移动
-                node_b = (*b_ptr.as_ptr()).next;
-            }
+
+        while let Some(val) = nodeb {
+            result_list.add(val.read().val);
+            nodeb = nodeb.unwrap().read().next;
         }
         result_list
 	}

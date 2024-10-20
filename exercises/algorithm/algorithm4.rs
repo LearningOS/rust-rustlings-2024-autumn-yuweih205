@@ -3,7 +3,7 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
+
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -48,42 +48,41 @@ where
         BinarySearchTree { root: None }
     }
     fn insert(&mut self, value: T) {
-        Ordering::Less => {
-            if let Some(ref mut left_child) = self.left {
-                left_child.insert(value);
-            } else {
-                self.left = Some(Box::new(TreeNode::new(value)));
-            }
-        }
-        Ordering::Greater => {
-            if let Some(ref mut right_child) = self.right {
-                right_child.insert(value);
-            } else {
-                self.right = Some(Box::new(TreeNode::new(value)));
-            }
-        }
-        Ordering::Equal => {
+        if self.root.is_none() {
+            let node = Box::new(TreeNode::new(value));
+            self.root = Some(node);
+        } else {
+            self.root.as_mut().unwrap().insert(value);
         }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        match value.cmp(&self.value) {
-        Ordering::Less => {
-            if let Some(ref left_child) = self.left {
-                left_child.search(value)
-            } else {
-                false
-            }
+        let mut root_node = &self.root;
+        if root_node.is_none() {
+            return false;
         }
-        Ordering::Greater => {
-            if let Some(ref right_child) = self.right {
-                right_child.search(value)
-            } else {
-                false
+
+        loop {
+            match root_node.as_ref().unwrap().value.cmp(&value) {
+                Ordering::Greater => {
+                    if root_node.as_ref().unwrap().left.is_none() {
+                        return false;
+                    } else {
+                        root_node = &root_node.as_ref().unwrap().left;
+                    }
+                }
+                Ordering::Less => {
+                    if root_node.as_ref().unwrap().right.is_none() {
+                        return false;
+                    } else {
+                        root_node = &root_node.as_ref().unwrap().right;
+                    }
+                }
+                Ordering::Equal => {
+                    return true;
+                }
             }
-        }
-        Ordering::Equal => true,
     }
     }
 }
@@ -95,6 +94,26 @@ where
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
+        match self.value.cmp(&value) {
+            Ordering::Greater => {
+                if self.left.is_none() {
+                    let left = Box::new(TreeNode::new(value));
+                    self.left = Some(left)
+                } else {
+                    self.left.as_mut().unwrap().insert(value);
+                }
+            }
+            Ordering::Less => {
+                if self.right.is_none() {
+                    let right = Box::new(TreeNode::new(value));
+                    self.right = Some(right)
+                } else {
+                    self.right.as_mut().unwrap().insert(value);
+                }
+            }
+
+            Ordering::Equal => {}
+        }
     }
 }
 
